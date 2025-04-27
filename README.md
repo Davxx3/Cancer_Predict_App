@@ -147,5 +147,4 @@ Model został wytrenowany na zbiorze danych "cervical_cancer.csv", zawierającym
 
 ## Kontakt
 
-- W razie pytań proszę o kontakt pod adresem
-- jakub.aurzecki@o2.pl (Nr albumu 44869) lub dawid.bartoszek04@wp.pl (Nr albumu 44871)
+- W razie pytań proszę o kontakt pod adresem dawid.bartoszek04@wp.pl
