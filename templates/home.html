@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="pl" data-bs-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>System Predykcji Raka Szyjki Macicy</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <style>
+      :root {
+        --primary-color: #4a90e2;
+        --secondary-color: #f5f5f5;
+        --text-color: #333;
+        --link-color: #2c3e50;
+        --danger-color: #dc3545;
+        --success-color: #28a745;
+      }
+
+      [data-bs-theme="dark"] {
+        --primary-color: #64b5f6;
+        --secondary-color: #1a1f2e;
+        --text-color: #e9ecef;
+        --link-color: #4a90e2;
+        --danger-color: #ff6b6b;
+        --success-color: #4caf50;
+        --card-bg: #2c3e50;
+        --header-gradient: linear-gradient(135deg, #2c3e50, #1a1f2e);
+        --shadow-color: rgba(0, 0, 0, 0.3);
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(--secondary-color);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      #particles-js {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding: 2rem 0;
+        background: var(
+          --header-gradient,
+          linear-gradient(135deg, var(--primary-color), #2c3e50)
+        );
+        color: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px var(--shadow-color, rgba(0, 0, 0, 0.1));
+        position: relative;
+        overflow: hidden;
+        animation: fadeInDown 1s ease-out;
+      }
+
+      .header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          45deg,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
+        transform: translateX(-100%);
+        transition: transform 0.6s;
+      }
+
+      .header:hover::before {
+        transform: translateX(100%);
+      }
+
+      .content-section {
+        background: var(--card-bg, white);
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px var(--shadow-color, rgba(0, 0, 0, 0.1));
+        margin-bottom: 2rem;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        animation: fadeInUp 0.8s ease-out backwards;
+      }
+
+      .content-section:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+
+      .content-section:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      .content-section:nth-child(4) {
+        animation-delay: 0.6s;
+      }
+
+      .content-section::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, var(--primary-color), transparent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.5s ease;
+      }
+
+      .content-section:hover::after {
+        transform: scaleX(1);
+      }
+
+      [data-bs-theme="dark"] .content-section {
+        background: var(--card-bg);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        border: none;
+        padding: 1rem 2.5rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        display: block;
+        width: 360px;
+        margin: 2rem auto;
+        text-align: center;
+        animation: pulse 2s infinite;
+      }
+
+      .btn-primary::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          45deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transform: translateX(-100%);
+        transition: transform 0.6s;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
+        background: linear-gradient(135deg, #1d4ed8, #1e40af);
+        animation: none;
+      }
+
+      .btn-primary:hover::before {
+        transform: translateX(100%);
+      }
+
+      .btn-primary i {
+        margin-right: 0.5rem;
+        font-size: 1.2rem;
+        transition: transform 0.3s ease;
+      }
+
+      .btn-primary:hover i {
+        transform: rotate(15deg);
+      }
+
+      .feature-list {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      .feature-list li {
+        margin-bottom: 1rem;
+        padding-left: 1.5rem;
+        position: relative;
+        transition: transform 0.3s ease;
+      }
+
+      .feature-list li:hover {
+        transform: translateX(5px);
+      }
+
+      .feature-list li:before {
+        content: "✓";
+        color: var(--success-color);
+        position: absolute;
+        left: 0;
+        text-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+        transition: transform 0.3s ease;
+      }
+
+      .feature-list li:hover:before {
+        transform: scale(1.2);
+      }
+
+      .warning-box {
+        background: rgba(220, 53, 69, 0.1);
+        border-left: 4px solid var(--danger-color);
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 0 10px 10px 0;
+        transition: all 0.3s ease;
+        animation: fadeInUp 0.8s ease-out 0.8s backwards;
+      }
+
+      .warning-box:hover {
+        transform: translateX(5px);
+        box-shadow: 0 4px 8px rgba(220, 53, 69, 0.2);
+      }
+
+      [data-bs-theme="dark"] .warning-box {
+        background: rgba(255, 107, 107, 0.1);
+        border-left-color: var(--danger-color);
+      }
+
+      .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        background: linear-gradient(135deg, #1e3a8a, #1e40af);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .theme-toggle:hover {
+        transform: scale(1.1) translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(135deg, #1e40af, #1e3a8a);
+      }
+
+      .theme-toggle i {
+        font-size: 1.5rem;
+        transition: transform 0.3s ease;
+      }
+
+      .theme-toggle:hover i {
+        transform: rotate(15deg);
+      }
+
+      .modal-dialog.wider {
+        max-width: 720px;
+      }
+
+      @media (max-width: 992px) {
+        .modal-dialog.wider {
+          max-width: 95%;
+          margin: 1.75rem auto;
+        }
+      }
+
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+        }
+        50% {
+          box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        }
+        100% {
+          box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+        }
+      }
+
+      .btn-link {
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        position: relative;
+        padding: 0.5rem 0;
+      }
+
+      .btn-link:hover {
+        color: var(--link-color);
+      }
+
+      .btn-link::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--primary-color);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease;
+      }
+
+      .btn-link:hover::after {
+        transform: scaleX(1);
+      }
+
+      .modal-content {
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        animation: fadeInUp 0.5s ease-out;
+      }
+
+      .modal-header {
+        background: linear-gradient(135deg, var(--primary-color), #2c3e50);
+        color: white;
+        border-bottom: none;
+      }
+
+      .modal-footer {
+        border-top: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="particles-js"></div>
+
+    <button
+      class="theme-toggle"
+      id="themeToggle"
+      aria-label="Przełącz tryb jasny/ciemny"
+    >
+      <i class="bi bi-sun-fill" id="themeIcon"></i>
+    </button>
+
+    <div class="container">
+      <div class="header">
+        <h1>System Predykcji Raka Szyjki Macicy</h1>
+        <p class="lead">
+          Narzędzie wspomagające ocenę ryzyka zachorowania na raka szyjki macicy
+        </p>
+      </div>
+
+      <div class="content-section">
+        <h2><i class="fas fa-info-circle me-2"></i>O systemie</h2>
+        <p>
+          System wykorzystuje zaawansowane algorytmy uczenia maszynowego do
+          analizy danych medycznych i przewidywania ryzyka zachorowania na raka
+          szyjki macicy. Na podstawie wprowadzonych informacji, system generuje
+          spersonalizowaną ocenę ryzyka wraz z zaleceniami.
+        </p>
+      </div>
+
+      <div class="content-section">
+        <h2><i class="fas fa-exclamation-triangle me-2"></i>Problematyka</h2>
+        <p>
+          Rak szyjki macicy wciąż stanowi poważne zagrożenie dla kobiet na całym
+          świecie, mimo dostępnych metod profilaktyki. Skuteczna diagnostyka i
+          przewidywanie ryzyka mogą znacząco poprawić wykrywalność we wczesnym
+          stadium.
+        </p>
+        <button
+          class="btn btn-link p-0 mt-2"
+          data-bs-toggle="modal"
+          data-bs-target="#problematykaModal"
+        >
+          <i class="fas fa-book-reader me-2"></i>Czytaj więcej
+        </button>
+      </div>
+
+      <div class="content-section">
+        <h2>Jak korzystać z systemu?</h2>
+        <ol>
+          <li>Kliknij przycisk "Rozpocznij analizę" poniżej</li>
+          <li>Wypełnij formularz, wprowadzając odpowiednie dane</li>
+          <li>System automatycznie przeanalizuje wprowadzone informacje</li>
+          <li>Otrzymasz wynik wraz z procentowym prawdopodobieństwem</li>
+        </ol>
+      </div>
+
+      <div class="warning-box">
+        <h4>Ważne!</h4>
+        <p>
+          System służy jako narzędzie wspomagające i nie zastępuje
+          profesjonalnej diagnozy lekarskiej. W przypadku niepokojących wyników
+          lub wątpliwości, zawsze konsultuj się z lekarzem.
+        </p>
+      </div>
+
+      <a href="/form" class="btn btn-primary">
+        <i class="bi bi-calculator"></i>Rozpocznij analizę
+      </a>
+    </div>
+
+    <!-- Modal dla Problematyki -->
+    <div
+      class="modal fade"
+      id="problematykaModal"
+      tabindex="-1"
+      aria-labelledby="problematykaModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-scrollable wider">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="problematykaModalLabel">
+              <i class="fas fa-exclamation-triangle me-2"></i>Problematyka
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Pomimo możliwości zapobiegania poprzez regularne cytologiczne
+              badania przesiewowe, rak szyjki macicy pozostaje istotną przyczyną
+              śmiertelności w krajach o niskich dochodach (Kauffman i in.,
+              2013). Nowotwór szyjki macicy jest przyczyną ponad 500 000
+              zachorowań rocznie i zabija ponad 250 000 pacjentek w tym samym
+              okresie na całym świecie.
+            </p>
+
+            <p>
+              Rakowi szyjki macicy można jednak zapobiegać za pomocą szczepionki
+              przeciwko zakażeniu wirusem brodawczaka ludzkiego (HPV) i
+              regularnych, tanich programów badań przesiewowych (Centers for
+              Disease Control and Prevention (CDC), 2013). Dwie najbardziej
+              rozpowszechnione techniki w programach badań przesiewowych to
+              konwencjonalna lub płynna cytologia i kolposkopia. Co więcej, rak
+              ten w większości przypadków może zostać wyleczony poprzez
+              usunięcie dotkniętych nim tkanek, jeśli zostanie zidentyfikowany
+              we wczesnym.
+            </p>
+
+            <p>
+              Rozwój raka szyjki macicy jest zwykle powolny i poprzedzony
+              nieprawidłowościami w szyjce macicy (dysplazja). Jednak brak
+              objawów we wczesnym stadium może powodować nieostrożność w
+              zapobieganiu. Ponadto, w krajach rozwijających się brakuje
+              zasobów, a pacjentki zazwyczaj słabo przestrzegają rutynowych
+              badań przesiewowych ze względu na niską świadomość problemu.
+            </p>
+
+            <p>
+              Podczas gdy poprawa resekcji zmian podczas pierwszych wizyt ma
+              bezpośredni wpływ na pacjentów, którzy uczestniczą w programach
+              przesiewowych, najbardziej narażone populacje mają słabe lub nawet
+              nieistniejące przestrzeganie programów leczenia. Głównymi
+              przyczynami tego problemu mogą być niska świadomość problemu i
+              dyskomfort pacjentów związany z procedurą medyczną.
+            </p>
+
+            <p>
+              Co więcej, w krajach o niskich dochodach, problem ten może wynikać
+              z braku dostępu do informacji i ośrodków medycznych. W związku z
+              tym obliczeniowe przewidywanie indywidualnego ryzyka pacjenta
+              odgrywa kluczową rolę w tym kontekście. Identyfikacja pacjentek z
+              najwyższym ryzykiem zachorowania na raka szyjki macicy może
+              poprawić skuteczność ukierunkowanych programów badań przesiewowych
+              w kierunku raka szyjki macicy: nasze oprogramowanie wykonuje tę
+              operację obliczeniowo w ciągu kilku minut, tworząc dokładne wyniki
+              prognoz.
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Zamknij
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const themeToggle = document.getElementById("themeToggle");
+        const themeIcon = document.getElementById("themeIcon");
+        const html = document.documentElement;
+
+        // Inicjalizacja particles.js
+        particlesJS("particles-js", {
+          particles: {
+            number: {
+              value: 80,
+              density: {
+                enable: true,
+                value_area: 800,
+              },
+            },
+            color: {
+              value: "#4a90e2",
+            },
+            shape: {
+              type: "circle",
+              stroke: {
+                width: 0,
+                color: "#000000",
+              },
+              polygon: {
+                nb_sides: 5,
+              },
+            },
+            opacity: {
+              value: 0.5,
+              random: false,
+              anim: {
+                enable: false,
+                speed: 1,
+                opacity_min: 0.1,
+                sync: false,
+              },
+            },
+            size: {
+              value: 3,
+              random: true,
+              anim: {
+                enable: false,
+                speed: 40,
+                size_min: 0.1,
+                sync: false,
+              },
+            },
+            line_linked: {
+              enable: true,
+              distance: 150,
+              color: "#4a90e2",
+              opacity: 0.4,
+              width: 1,
+            },
+            move: {
+              enable: true,
+              speed: 2,
+              direction: "none",
+              random: false,
+              straight: false,
+              out_mode: "out",
+              bounce: false,
+              attract: {
+                enable: false,
+                rotateX: 600,
+                rotateY: 1200,
+              },
+            },
+          },
+          interactivity: {
+            detect_on: "canvas",
+            events: {
+              onhover: {
+                enable: true,
+                mode: "grab",
+              },
+              onclick: {
+                enable: true,
+                mode: "push",
+              },
+              resize: true,
+            },
+            modes: {
+              grab: {
+                distance: 140,
+                line_linked: {
+                  opacity: 1,
+                },
+              },
+              bubble: {
+                distance: 400,
+                size: 40,
+                duration: 2,
+                opacity: 8,
+                speed: 3,
+              },
+              repulse: {
+                distance: 200,
+                duration: 0.4,
+              },
+              push: {
+                particles_nb: 4,
+              },
+              remove: {
+                particles_nb: 2,
+              },
+            },
+          },
+          retina_detect: true,
+        });
+
+        // Sprawdź zapisany preferowany motyw
+        const savedTheme = localStorage.getItem("theme") || "light";
+        html.setAttribute("data-bs-theme", savedTheme);
+        updateIcon(savedTheme);
+
+        // Obsługa kliknięcia przycisku
+        themeToggle.addEventListener("click", function () {
+          const currentTheme = html.getAttribute("data-bs-theme");
+          const newTheme = currentTheme === "light" ? "dark" : "light";
+
+          html.setAttribute("data-bs-theme", newTheme);
+          localStorage.setItem("theme", newTheme);
+          updateIcon(newTheme);
+
+          // Aktualizacja koloru cząsteczek w zależności od motywu
+          if (newTheme === "dark") {
+            window.pJSDom[0].pJS.particles.color.value = "#64b5f6";
+            window.pJSDom[0].pJS.particles.line_linked.color = "#64b5f6";
+            window.pJSDom[0].pJS.fn.particlesUpdate();
+          } else {
+            window.pJSDom[0].pJS.particles.color.value = "#4a90e2";
+            window.pJSDom[0].pJS.particles.line_linked.color = "#4a90e2";
+            window.pJSDom[0].pJS.fn.particlesUpdate();
+          }
+        });
+
+        // Aktualizacja ikony
+        function updateIcon(theme) {
+          if (theme === "light") {
+            themeIcon.className = "bi bi-sun-fill";
+          } else {
+            themeIcon.className = "bi bi-moon-fill";
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

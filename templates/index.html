@@ -1,0 +1,2009 @@
+<!DOCTYPE html>
+<html lang="pl" data-bs-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ocena Ryzyka Raka Szyjki Macicy</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <style>
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(-20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes gradientFlow {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes moveGradient {
+        0% {
+          background-position: 0% 0%;
+        }
+        50% {
+          background-position: 100% 100%;
+        }
+        100% {
+          background-position: 0% 0%;
+        }
+      }
+
+      :root {
+        --bg-color: #f0f2f5;
+        --card-bg: #ffffff;
+        --text-color: #1a1a1a;
+        --border-color: #e4e6eb;
+        --section-title-color: #2563eb;
+        --hover-color: #1d4ed8;
+        --shadow-color: rgba(0, 0, 0, 0.1);
+        --input-bg: #ffffff;
+        --input-border: #e4e6eb;
+        --input-focus-border: #2563eb;
+        --checkbox-bg: #ffffff;
+        --checkbox-border: #e4e6eb;
+        --checkbox-checked: #2563eb;
+        --progress-bg: #e4e6eb;
+        --success-color: #16a34a;
+        --danger-color: #dc2626;
+        --gradient: linear-gradient(
+          135deg,
+          var(--section-title-color),
+          var(--hover-color)
+        );
+        --card-hover-shadow: 0 12px 24px var(--shadow-color);
+        --card-shadow: 0 8px 16px var(--shadow-color);
+        --input-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        --transition-speed: 0.3s;
+      }
+
+      [data-bs-theme="dark"] {
+        --bg-color: #1a1f2e;
+        --card-bg: #2c3e50;
+        --text-color: #e9ecef;
+        --border-color: #3d4d66;
+        --section-title-color: #64b5f6;
+        --hover-color: #4a90e2;
+        --shadow-color: rgba(0, 0, 0, 0.3);
+        --input-bg: #2c3e50;
+        --input-border: #3d4d66;
+        --input-focus-border: #64b5f6;
+        --checkbox-bg: #2c3e50;
+        --checkbox-border: #3d4d66;
+        --checkbox-checked: #64b5f6;
+        --progress-bg: #3d4d66;
+        --success-color: #4caf50;
+        --danger-color: #ff6b6b;
+        --card-hover-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+        --card-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        --input-shadow: 0 0 0 3px rgba(100, 181, 246, 0.2);
+        --header-gradient: linear-gradient(135deg, #2c3e50, #1a1f2e);
+      }
+
+      body {
+        background-color: var(--bg-color);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--text-color);
+        transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+        line-height: 1.6;
+        animation: fadeIn 0.8s ease-out;
+        position: relative;
+        overflow-x: hidden;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        scroll-behavior: smooth;
+      }
+
+      .background-animation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background-color: var(--bg-color);
+        overflow: hidden;
+        transition: background-color 0.5s ease;
+      }
+
+      .background-animation::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at 50% 50%,
+          rgba(74, 144, 226, 0.15) 0%,
+          rgba(74, 144, 226, 0.1) 30%,
+          transparent 70%
+        );
+        animation: pulse 8s infinite alternate;
+        transition: background 0.5s ease;
+      }
+
+      .background-animation::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+            circle at 20% 30%,
+            rgba(74, 144, 226, 0.15) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 70%,
+            rgba(74, 144, 226, 0.15) 0%,
+            transparent 50%
+          );
+        animation: moveGradient 15s infinite alternate;
+        background-size: 200% 200%;
+        transition: background 0.5s ease;
+      }
+
+      [data-bs-theme="dark"] .background-animation::before {
+        background: radial-gradient(
+          circle at 50% 50%,
+          rgba(100, 181, 246, 0.2) 0%,
+          rgba(100, 181, 246, 0.15) 30%,
+          transparent 70%
+        );
+      }
+
+      [data-bs-theme="dark"] .background-animation::after {
+        background: radial-gradient(
+            circle at 20% 30%,
+            rgba(100, 181, 246, 0.2) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 70%,
+            rgba(100, 181, 246, 0.2) 0%,
+            transparent 50%
+          );
+        background-size: 200% 200%;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin-top: 2rem;
+        padding: 0 1rem;
+        position: relative;
+        z-index: 1;
+        flex: 1;
+      }
+
+      .card {
+        border-radius: 20px;
+        box-shadow: var(--card-shadow);
+        background-color: var(--card-bg);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+        animation: slideIn 0.6s ease-out;
+        position: relative;
+        cursor: pointer;
+        z-index: 2;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--card-hover-shadow);
+      }
+
+      .card::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(
+          90deg,
+          var(--section-title-color),
+          transparent
+        );
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.5s ease;
+      }
+
+      .card:hover::after {
+        transform: scaleX(1);
+      }
+
+      .card-header {
+        background: var(--header-gradient, var(--gradient));
+        background-size: 200% 200%;
+        animation: gradientFlow 5s ease infinite;
+        color: white;
+        border-radius: 20px 20px 0 0;
+        padding: 1.5rem;
+        border: none;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card-header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          45deg,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
+        transform: translateX(-100%);
+        transition: transform 0.6s;
+      }
+
+      .card-header:hover::before {
+        transform: translateX(100%);
+      }
+
+      .card-header h2 {
+        font-weight: 600;
+        margin: 0;
+        font-size: 1.8rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-body {
+        padding: 2rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+        animation: fadeIn 0.5s ease-out;
+        transition: transform 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        z-index: 2;
+      }
+
+      .form-group:hover {
+        transform: translateX(5px);
+      }
+
+      .form-group label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: var(--text-color);
+        transition: color var(--transition-speed) ease;
+      }
+
+      .form-control {
+        background-color: var(--input-bg);
+        border: 2px solid var(--input-border);
+        border-radius: 10px;
+        color: var(--text-color);
+        padding: 0.75rem 1rem;
+        transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: text;
+        position: relative;
+        z-index: 2;
+      }
+
+      .form-control:focus {
+        background-color: var(--input-bg);
+        border-color: var(--input-focus-border);
+        color: var(--text-color);
+        box-shadow: var(--input-shadow);
+        transform: translateY(-2px);
+      }
+
+      .form-control.is-invalid {
+        border-color: var(--danger-color);
+        background-color: rgba(255, 107, 107, 0.1);
+      }
+
+      .form-control.is-invalid:focus {
+        box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+      }
+
+      .form-check-input {
+        background-color: var(--checkbox-bg);
+        border: 2px solid var(--checkbox-border);
+        width: 1.2rem;
+        height: 1.2rem;
+        margin-top: 0.2rem;
+        transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .form-check-input:checked {
+        background-color: var(--section-title-color);
+        border-color: var(--section-title-color);
+        animation: pulse 0.5s ease;
+      }
+
+      .form-check-input:hover {
+        border-color: var(--section-title-color);
+        transform: scale(1.1);
+      }
+
+      .form-check-label {
+        color: var(--text-color);
+        font-weight: 500;
+        margin-left: 0.5rem;
+        transition: color var(--transition-speed) ease;
+      }
+
+      .form-check:hover .form-check-label {
+        color: var(--section-title-color);
+      }
+
+      .result-card {
+        display: none;
+        margin-top: 2rem;
+        animation: fadeIn 0.8s ease-out;
+        cursor: pointer;
+        position: relative;
+        z-index: 2;
+      }
+
+      .result-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--card-hover-shadow);
+      }
+
+      .progress {
+        height: 30px;
+        margin: 1.5rem 0;
+        background-color: var(--progress-bg);
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: inset 0 2px 4px var(--shadow-color);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 2;
+      }
+
+      .progress:hover {
+        transform: scale(1.02);
+        box-shadow: inset 0 2px 8px var(--shadow-color);
+      }
+
+      .progress-bar {
+        transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 15px;
+        background: var(--gradient);
+        background-size: 200% 200%;
+        animation: gradientFlow 5s ease infinite;
+      }
+
+      .btn-submit {
+        background: var(--header-gradient, var(--gradient));
+        background-size: 200% 200%;
+        animation: gradientFlow 5s ease infinite;
+        color: white;
+        border: none;
+        padding: 1rem 2.5rem;
+        border-radius: 15px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: var(--card-shadow);
+        position: relative;
+        overflow: hidden;
+        animation: pulse 2s infinite;
+      }
+
+      .btn-submit::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          45deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transform: translateX(-100%);
+        transition: transform 0.6s;
+      }
+
+      .btn-submit:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: var(--card-hover-shadow);
+        animation: none;
+      }
+
+      .btn-submit:hover::before {
+        transform: translateX(100%);
+      }
+
+      .btn-submit i {
+        transition: transform 0.3s ease;
+      }
+
+      .btn-submit:hover i {
+        transform: rotate(15deg);
+      }
+
+      .section-title {
+        color: var(--section-title-color);
+        margin: 2rem 0 1.5rem;
+        font-weight: 600;
+        font-size: 1.3rem;
+        position: relative;
+        padding-bottom: 0.5rem;
+        animation: slideIn 0.5s ease-out;
+        transition: color var(--transition-speed) ease;
+        text-shadow: 0 0 10px rgba(100, 181, 246, 0.2);
+        cursor: pointer;
+        z-index: 2;
+        scroll-margin-top: 100px;
+      }
+
+      .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background: var(--gradient);
+        background-size: 200% 200%;
+        animation: gradientFlow 5s ease infinite;
+        border-radius: 3px;
+        transition: width 0.3s ease;
+      }
+
+      .section-title:hover::after {
+        width: 100px;
+      }
+
+      .section-title:hover {
+        color: var(--hover-color);
+      }
+
+      .section-title::before {
+        content: "🔍";
+        margin-right: 10px;
+        font-size: 1.2rem;
+        opacity: 0.7;
+        transition: transform 0.3s ease;
+      }
+
+      .section-title:hover::before {
+        transform: scale(1.2);
+      }
+
+      .alert {
+        display: none;
+        margin-top: 1rem;
+        border-radius: 10px;
+        padding: 1rem;
+        border: none;
+        box-shadow: var(--card-shadow);
+        animation: fadeIn 0.5s ease-out;
+        transition: all var(--transition-speed) ease;
+      }
+
+      [data-bs-theme="dark"] .alert {
+        background-color: rgba(239, 68, 68, 0.1);
+        border: 1px solid var(--danger-color);
+      }
+
+      .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        background: linear-gradient(135deg, #1e3a8a, #1e40af);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .theme-toggle:hover {
+        transform: scale(1.1) translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(135deg, #1e40af, #1e3a8a);
+      }
+
+      .theme-toggle i {
+        font-size: 1.5rem;
+        transition: transform 0.3s ease;
+      }
+
+      .theme-toggle:hover i {
+        transform: rotate(15deg);
+      }
+
+      .home-button {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+        background: linear-gradient(135deg, #1e3a8a, #1e40af);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        text-decoration: none;
+      }
+
+      .home-button:hover {
+        transform: scale(1.1) translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(135deg, #1e40af, #1e3a8a);
+        color: white;
+      }
+
+      .home-button i {
+        font-size: 1.5rem;
+        transition: transform 0.3s ease;
+      }
+
+      .home-button:hover i {
+        transform: translateX(-2px);
+      }
+
+      #riskLevel {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 1rem 0;
+        animation: fadeIn 0.5s ease-out;
+      }
+
+      #riskDescription {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-top: 1rem;
+        animation: fadeIn 0.5s ease-out 0.2s backwards;
+      }
+
+      .form-check {
+        margin-bottom: 0.8rem;
+        transition: transform var(--transition-speed) ease;
+        cursor: pointer;
+        position: relative;
+        z-index: 2;
+      }
+
+      .form-check:hover {
+        transform: translateX(5px);
+      }
+
+      .disabled-field {
+        background-color: var(--input-bg);
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+        transition: all var(--transition-speed) ease;
+      }
+
+      [data-bs-theme="dark"] .disabled-field {
+        background-color: var(--input-bg);
+        opacity: 0.3;
+      }
+
+      .risk-percentage {
+        transition: all var(--transition-speed) ease;
+        cursor: pointer;
+        position: relative;
+        z-index: 2;
+      }
+
+      .risk-percentage:hover {
+        transform: scale(1.05);
+      }
+
+      [data-bs-theme="dark"] .risk-percentage {
+        text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          margin-top: 1rem;
+        }
+
+        .card-header h2 {
+          font-size: 1.5rem;
+        }
+
+        .card-body {
+          padding: 1.5rem;
+        }
+
+        .btn-submit {
+          width: 100%;
+          padding: 0.75rem 1.5rem;
+        }
+      }
+
+      .form-select {
+        background-color: var(--input-bg, white);
+        border: 1px solid var(--border-color, #ced4da);
+        color: var(--text-color, #212529);
+        padding: 0.75rem 1rem;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        font-size: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        position: relative;
+        z-index: 2;
+      }
+
+      .form-select:hover {
+        border-color: var(--primary-color, #4a90e2);
+        transform: translateY(-2px);
+      }
+
+      .form-select:disabled {
+        background-color: var(--disabled-bg, #e9ecef);
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+
+      [data-bs-theme="dark"] .form-select {
+        background-color: var(--input-bg, #2c3e50);
+        border-color: var(--border-color, #495057);
+        color: var(--text-color, #e9ecef);
+      }
+
+      [data-bs-theme="dark"] .form-select:focus {
+        border-color: var(--primary-color, #64b5f6);
+        box-shadow: 0 0 0 0.25rem rgba(100, 181, 246, 0.25);
+      }
+
+      [data-bs-theme="dark"] .form-select:disabled {
+        background-color: var(--disabled-bg, #343a40);
+      }
+
+      .form-select option {
+        padding: 0.5rem;
+        background-color: var(--input-bg, white);
+        color: var(--text-color, #212529);
+      }
+
+      [data-bs-theme="dark"] .form-select option {
+        background-color: var(--input-bg, #2c3e50);
+        color: var(--text-color, #e9ecef);
+      }
+
+      .section-nav-button {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: none;
+        background-color: var(--section-title-color);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        opacity: 0.7;
+      }
+
+      .section-nav-button.completed {
+        background-color: var(--success-color);
+        opacity: 1;
+      }
+
+      .section-nav-button.completed i {
+        content: "\F270";
+        font-family: "bootstrap-icons";
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background-animation"></div>
+
+    <a href="/" class="home-button" aria-label="Powrót do strony głównej">
+      <i class="bi bi-house-fill"></i>
+    </a>
+
+    <button
+      class="theme-toggle"
+      id="themeToggle"
+      aria-label="Przełącz tryb jasny/ciemny"
+    >
+      <i class="bi bi-sun-fill" id="themeIcon"></i>
+    </button>
+
+    <div class="container">
+      <div class="card">
+        <div class="card-header text-center">
+          <h2>
+            <i class="fas fa-heartbeat me-2"></i>Ocena Ryzyka Raka Szyjki Macicy
+          </h2>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-danger" id="errorAlert" role="alert"></div>
+          <form id="predictionForm">
+            <div class="section-title">Informacje Osobiste</div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="age">Wiek</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="age"
+                    min="0"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="sexual_partners" class="form-label"
+                    >Liczba partnerów seksualnych</label
+                  >
+                  <select
+                    class="form-select"
+                    id="sexual_partners"
+                    name="sexual_partners"
+                    required
+                  >
+                    <option value="" selected disabled>
+                      Wybierz liczbę partnerów
+                    </option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">5+</option>
+                    <option value="7">10+</option>
+                    <option value="8">15+</option>
+                    <option value="9">20+</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-title">Historia Medyczna</div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="first_sex">Wiek przy Pierwszym Stosunku</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="first_sex"
+                    min="0"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="pregnancies">Liczba Ciąż</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="pregnancies"
+                    min="0"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="section-title">Historia Palenia</div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Czy Palisz</label>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="smokes"
+                      id="smokes_yes"
+                      value="1"
+                      required
+                    />
+                    <label class="form-check-label" for="smokes_yes">Tak</label>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="smokes"
+                      id="smokes_no"
+                      value="0"
+                      required
+                    />
+                    <label class="form-check-label" for="smokes_no">Nie</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="smokes_years">Lata Palenia</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="smokes_years"
+                    min="0"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="smokes_packs_year">Paczki na Rok</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="smokes_packs_year"
+                    min="0"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="section-title">Historia Antykoncepcji</div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Antykoncepcja Hormonalna</label>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="hormonal_contraceptives"
+                      id="hormonal_contraceptives_yes"
+                      value="1"
+                      required
+                    />
+                    <label
+                      class="form-check-label"
+                      for="hormonal_contraceptives_yes"
+                      >Tak</label
+                    >
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="hormonal_contraceptives"
+                      id="hormonal_contraceptives_no"
+                      value="0"
+                      required
+                    />
+                    <label
+                      class="form-check-label"
+                      for="hormonal_contraceptives_no"
+                      >Nie</label
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="hormonal_contraceptives_years"
+                    >Lata Stosowania Antykoncepcji Hormonalnej</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="hormonal_contraceptives_years"
+                    min="0"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="section-title">Wkładka Wewnątrzmaciczna (IUD)</div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Czy Stosuje Wkładkę</label>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="iud"
+                      id="iud_yes"
+                      value="1"
+                      required
+                    />
+                    <label class="form-check-label" for="iud_yes">Tak</label>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="iud"
+                      id="iud_no"
+                      value="0"
+                      required
+                    />
+                    <label class="form-check-label" for="iud_no">Nie</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="iud_years">Lata Stosowania Wkładki</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="iud_years"
+                    min="0"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="section-title">
+              Choroby Przenoszone Drogą Płciową (STD)
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Czy Miała Choroby STD</label>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="stds"
+                      id="stds_yes"
+                      value="1"
+                      required
+                    />
+                    <label class="form-check-label" for="stds_yes">Tak</label>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="stds"
+                      id="stds_no"
+                      value="0"
+                      required
+                    />
+                    <label class="form-check-label" for="stds_no">Nie</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="stds_number">Liczba Chorób STD</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="stds_number"
+                    min="0"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="section-title">Szczegóły Chorób STD</div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="stds_condylomatosis"
+                  />
+                  <label class="form-check-label" for="stds_condylomatosis"
+                    >Kłykciny</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="stds_cervical_condylomatosis"
+                  />
+                  <label
+                    class="form-check-label"
+                    for="stds_cervical_condylomatosis"
+                    >Kłykciny Szyjki Macicy</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="stds_vaginal_condylomatosis"
+                  />
+                  <label
+                    class="form-check-label"
+                    for="stds_vaginal_condylomatosis"
+                    >Kłykciny Pochwy</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="stds_vulvo_perineal_condylomatosis"
+                  />
+                  <label
+                    class="form-check-label"
+                    for="stds_vulvo_perineal_condylomatosis"
+                    >Kłykciny Sromu</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="stds_syphilis"
+                  />
+                  <label class="form-check-label" for="stds_syphilis"
+                    >Kiła</label
+                  >
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="stds_pelvic_inflammatory_disease"
+                  />
+                  <label
+                    class="form-check-label"
+                    for="stds_pelvic_inflammatory_disease"
+                    >Zapalenie Miednicy</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="stds_genital_herpes"
+                  />
+                  <label class="form-check-label" for="stds_genital_herpes"
+                    >Opryszczka Narządów Płciowych</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="stds_molluscum_contagiosum"
+                  />
+                  <label
+                    class="form-check-label"
+                    for="stds_molluscum_contagiosum"
+                    >Mięczak Zakaźny</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="stds_aids"
+                  />
+                  <label class="form-check-label" for="stds_aids">AIDS</label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="stds_hiv"
+                  />
+                  <label class="form-check-label" for="stds_hiv">HIV</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-title">Dodatkowe Informacje o STD</div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="stds_hepatitis_b"
+                  />
+                  <label class="form-check-label" for="stds_hepatitis_b"
+                    >Wirusowe Zapalenie Wątroby Typu B</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="stds_hpv"
+                  />
+                  <label class="form-check-label" for="stds_hpv">HPV</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="stds_diagnosis_number">Liczba Diagnoz STD</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="stds_diagnosis_number"
+                    min="0"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="section-title">Diagnostyka</div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="dx_cancer"
+                  />
+                  <label class="form-check-label" for="dx_cancer">Rak</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="dx_cin" />
+                  <label class="form-check-label" for="dx_cin"
+                    >CIN (Zmiany Przedrakowe)</label
+                  >
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="dx_hpv" />
+                  <label class="form-check-label" for="dx_hpv">HPV</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="dx" />
+                  <label class="form-check-label" for="dx">Inne Zmiany</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-center mt-4">
+              <button type="submit" class="btn btn-submit">
+                <i class="fas fa-calculator me-2"></i>Oblicz Ryzyko
+              </button>
+            </div>
+          </form>
+
+          <div class="result-card" id="resultCard">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="text-center mb-4">Wyniki Oceny Ryzyka</h4>
+                <div class="progress">
+                  <div
+                    class="progress-bar"
+                    role="progressbar"
+                    style="width: 0%"
+                  ></div>
+                </div>
+                <div class="text-center mt-3">
+                  <h5 id="riskLevel"></h5>
+                  <div class="risk-percentage mb-3">
+                    <span class="percentage-value" id="riskPercentage"></span>
+                    <span class="percentage-label">prawdopodobieństwo</span>
+                  </div>
+                  <p id="riskDescription"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document
+        .getElementById("predictionForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          // Hide previous error message
+          const errorAlert = document.getElementById("errorAlert");
+          errorAlert.style.display = "none";
+
+          // Sprawdź czy wszystkie wartości są nieujemne
+          const numericInputs = document.querySelectorAll(
+            'input[type="number"]'
+          );
+          let hasNegativeValue = false;
+
+          numericInputs.forEach((input) => {
+            if (parseFloat(input.value) < 0) {
+              hasNegativeValue = true;
+              input.classList.add("is-invalid");
+            } else {
+              input.classList.remove("is-invalid");
+            }
+          });
+
+          if (hasNegativeValue) {
+            errorAlert.textContent =
+              "Wartości nie mogą być ujemne. Proszę poprawić wprowadzone dane.";
+            errorAlert.style.display = "block";
+            return;
+          }
+
+          // Zbierz dane z formularza - dokładnie tak samo, jak w oryginalnym modelu
+          const formData = {
+            age: document.getElementById("age").value || "0",
+            sexual_partners:
+              document.getElementById("sexual_partners").value || "0",
+            first_sex: document.getElementById("first_sex").value || "0",
+            pregnancies: document.getElementById("pregnancies").value || "0",
+            smokes:
+              document.querySelector('input[name="smokes"]:checked')?.value ||
+              "0",
+            smokes_years: document.getElementById("smokes_years").disabled
+              ? "0"
+              : document.getElementById("smokes_years").value || "0",
+            smokes_packs_year: document.getElementById("smokes_packs_year")
+              .disabled
+              ? "0"
+              : document.getElementById("smokes_packs_year").value || "0",
+            hormonal_contraceptives:
+              document.querySelector(
+                'input[name="hormonal_contraceptives"]:checked'
+              )?.value || "0",
+            hormonal_contraceptives_years: document.getElementById(
+              "hormonal_contraceptives_years"
+            ).disabled
+              ? "0"
+              : document.getElementById("hormonal_contraceptives_years")
+                  .value || "0",
+            iud:
+              document.querySelector('input[name="iud"]:checked')?.value || "0",
+            iud_years: document.getElementById("iud_years").disabled
+              ? "0"
+              : document.getElementById("iud_years").value || "0",
+            stds:
+              document.querySelector('input[name="stds"]:checked')?.value ||
+              "0",
+            stds_number: document.getElementById("stds_number").disabled
+              ? "0"
+              : document.getElementById("stds_number").value || "0",
+            stds_condylomatosis: document.getElementById("stds_condylomatosis")
+              .checked
+              ? "1"
+              : "0",
+            stds_cervical_condylomatosis: document.getElementById(
+              "stds_cervical_condylomatosis"
+            )
+              ? document.getElementById("stds_cervical_condylomatosis").checked
+                ? "1"
+                : "0"
+              : "0",
+            stds_vaginal_condylomatosis: document.getElementById(
+              "stds_vaginal_condylomatosis"
+            ).checked
+              ? "1"
+              : "0",
+            stds_vulvo_perineal_condylomatosis: document.getElementById(
+              "stds_vulvo_perineal_condylomatosis"
+            ).checked
+              ? "1"
+              : "0",
+            stds_syphilis: document.getElementById("stds_syphilis").checked
+              ? "1"
+              : "0",
+            stds_pelvic_inflammatory_disease: document.getElementById(
+              "stds_pelvic_inflammatory_disease"
+            )
+              ? document.getElementById("stds_pelvic_inflammatory_disease")
+                  .checked
+                ? "1"
+                : "0"
+              : "0",
+            stds_genital_herpes: document.getElementById("stds_genital_herpes")
+              .checked
+              ? "1"
+              : "0",
+            stds_molluscum_contagiosum: document.getElementById(
+              "stds_molluscum_contagiosum"
+            )
+              ? document.getElementById("stds_molluscum_contagiosum").checked
+                ? "1"
+                : "0"
+              : "0",
+            stds_aids: document.getElementById("stds_aids")
+              ? document.getElementById("stds_aids").checked
+                ? "1"
+                : "0"
+              : "0",
+            stds_hiv: document.getElementById("stds_hiv").checked ? "1" : "0",
+            stds_hepatitis_b: document.getElementById("stds_hepatitis_b")
+              .checked
+              ? "1"
+              : "0",
+            stds_hpv: document.getElementById("stds_hpv").checked ? "1" : "0",
+            stds_diagnosis_number: document.getElementById(
+              "stds_diagnosis_number"
+            ).disabled
+              ? "0"
+              : document.getElementById("stds_diagnosis_number").value || "0",
+            dx_cancer: document.getElementById("dx_cancer").checked ? "1" : "0",
+            dx_cin: document.getElementById("dx_cin").checked ? "1" : "0",
+            dx_hpv: document.getElementById("dx_hpv").checked ? "1" : "0",
+            dx: document.getElementById("dx").checked ? "1" : "0",
+          };
+
+          // Dodaj logowanie danych formularza dla celów diagnostycznych
+          console.log("Dane wysyłane do serwera:", formData);
+
+          try {
+            const response = await fetch("/predict", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(formData),
+            });
+
+            const data = await response.json();
+            console.log("Odpowiedź z serwera:", data);
+            console.log("Prawdopodobieństwo ryzyka:", data.probability_1);
+            console.log("Próg klasyfikacji:", 0.1);
+            console.log("Przewidywana klasa:", data.prediction);
+
+            if (data.success) {
+              const resultCard = document.getElementById("resultCard");
+              const progressBar = document.querySelector(".progress-bar");
+              const riskLevel = document.getElementById("riskLevel");
+              const riskPercentage = document.getElementById("riskPercentage");
+              const riskDescription =
+                document.getElementById("riskDescription");
+
+              const probability = data.probability_1 * 100;
+              progressBar.style.width = `${probability}%`;
+
+              // Ustaw kolor pasek postępu w zależności od progu 0.1 (10%),
+              // dokładnie tak jak w oryginalnym modelu
+              progressBar.style.backgroundColor =
+                probability >= 10 ? "#dc3545" : "#28a745";
+
+              // Formatowanie procentu z dokładnością do 1 miejsca po przecinku
+              riskPercentage.textContent = `${probability.toFixed(1)}%`;
+              riskPercentage.style.color =
+                probability >= 10 ? "#dc3545" : "#28a745";
+              riskPercentage.style.fontSize = "2rem";
+              riskPercentage.style.fontWeight = "bold";
+
+              // Użyj progu 0.1 (10%) dla klasyfikacji, dokładnie jak w oryginalnym modelu
+              if (data.prediction === 1) {
+                riskLevel.textContent = "Wysokie Ryzyko";
+                riskLevel.style.color = "#dc3545";
+                riskDescription.textContent =
+                  "Na podstawie podanych informacji istnieje zwiększone ryzyko raka szyjki macicy. Proszę skonsultować się z lekarzem w celu dalszej oceny.";
+              } else {
+                riskLevel.textContent = "Niskie Ryzyko";
+                riskLevel.style.color = "#28a745";
+                riskDescription.textContent =
+                  "Na podstawie podanych informacji ryzyko raka szyjki macicy wydaje się być niskie. Kontynuuj regularne badania kontrolne zgodnie z zaleceniami lekarza.";
+              }
+
+              resultCard.style.display = "block";
+              resultCard.scrollIntoView({ behavior: "smooth" });
+            } else {
+              errorAlert.textContent =
+                data.error ||
+                "Wystąpił nieznany błąd podczas przetwarzania danych.";
+              errorAlert.style.display = "block";
+              console.error("Błąd z serwera:", data.error);
+            }
+          } catch (error) {
+            console.error("Błąd podczas komunikacji z serwerem:", error);
+            errorAlert.textContent =
+              "Wystąpił błąd podczas komunikacji z serwerem. Proszę spróbować ponownie.";
+            errorAlert.style.display = "block";
+          }
+        });
+
+      // Dodaj obsługę przełączania motywu
+      const themeToggle = document.getElementById("themeToggle");
+      const themeIcon = document.getElementById("themeIcon");
+      const html = document.documentElement;
+      const backgroundAnimation = document.querySelector(
+        ".background-animation"
+      );
+
+      // Funkcja aktualizująca ikonę
+      function updateIcon(theme) {
+        if (theme === "dark") {
+          themeIcon.classList.remove("bi-sun-fill");
+          themeIcon.classList.add("bi-moon-fill");
+        } else {
+          themeIcon.classList.remove("bi-moon-fill");
+          themeIcon.classList.add("bi-sun-fill");
+        }
+      }
+
+      // Sprawdź zapisany motyw
+      const savedTheme = localStorage.getItem("theme") || "light";
+      html.setAttribute("data-bs-theme", savedTheme);
+      updateIcon(savedTheme);
+
+      themeToggle.addEventListener("click", () => {
+        const currentTheme = html.getAttribute("data-bs-theme");
+        const newTheme = currentTheme === "light" ? "dark" : "light";
+
+        html.setAttribute("data-bs-theme", newTheme);
+        localStorage.setItem("theme", newTheme);
+        updateIcon(newTheme);
+
+        // Płynne przejście tła
+        backgroundAnimation.style.transition = "background-color 0.5s ease";
+        setTimeout(() => {
+          backgroundAnimation.style.transition = "none";
+        }, 500);
+      });
+
+      // Dodaj płynne przewijanie do sekcji
+      document.addEventListener("DOMContentLoaded", function () {
+        // Pobierz wszystkie tytuły sekcji
+        const sectionTitles = document.querySelectorAll(".section-title");
+
+        // Dodaj obsługę kliknięcia do każdego tytułu
+        sectionTitles.forEach((title) => {
+          title.addEventListener("click", function () {
+            // Przewiń do sekcji
+            this.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+
+            // Dodaj efekt podświetlenia
+            this.style.color = "var(--hover-color)";
+            setTimeout(() => {
+              this.style.color = "var(--section-title-color)";
+            }, 1000);
+          });
+        });
+
+        // Dodaj obsługę klawisza Tab do pól formularza
+        const formInputs = document.querySelectorAll("input, select, textarea");
+        formInputs.forEach((input) => {
+          input.addEventListener("keydown", function (e) {
+            if (e.key === "Tab") {
+              // Znajdź następną sekcję
+              const currentSection = this.closest(".form-group, .form-check");
+              if (currentSection) {
+                const nextSection = currentSection.nextElementSibling;
+                if (
+                  nextSection &&
+                  nextSection.classList.contains("section-title")
+                ) {
+                  e.preventDefault();
+                  nextSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  });
+                }
+              }
+            }
+          });
+        });
+
+        // Dodaj płynne przewijanie dla wszystkich linków wewnętrznych
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute("href");
+            if (targetId === "#") return;
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              targetElement.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }
+          });
+        });
+
+        // Dodaj przyciski nawigacji do sekcji
+        const sections = document.querySelectorAll(".section-title");
+        if (sections.length > 0) {
+          // Utwórz kontener na przyciski nawigacji
+          const navContainer = document.createElement("div");
+          navContainer.className = "section-nav";
+          navContainer.style.cssText = `
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+          `;
+
+          // Dodaj przyciski dla każdej sekcji
+          sections.forEach((section, index) => {
+            const button = document.createElement("button");
+            button.className = "section-nav-button";
+            button.innerHTML = `<i class="bi bi-dot"></i>`;
+            button.style.cssText = `
+              width: 30px;
+              height: 30px;
+              border-radius: 50%;
+              border: none;
+              background-color: var(--section-title-color);
+              color: white;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              transition: all 0.3s ease;
+              opacity: 0.7;
+            `;
+
+            button.addEventListener("click", () => {
+              section.scrollIntoView({ behavior: "smooth", block: "start" });
+            });
+
+            button.addEventListener("mouseenter", () => {
+              button.style.transform = "scale(1.2)";
+              button.style.opacity = "1";
+            });
+
+            button.addEventListener("mouseleave", () => {
+              if (!button.classList.contains("completed")) {
+                button.style.transform = "scale(1)";
+                button.style.opacity = "0.7";
+              }
+            });
+
+            navContainer.appendChild(button);
+          });
+
+          // Dodaj kontener do body
+          document.body.appendChild(navContainer);
+
+          // Dodaj obsługę przewijania, aby podświetlać aktywną sekcję
+          window.addEventListener("scroll", () => {
+            const scrollPosition = window.scrollY + 100;
+
+            sections.forEach((section, index) => {
+              const sectionTop = section.offsetTop;
+              const sectionHeight = section.offsetHeight;
+              const navButton = navContainer.children[index];
+
+              if (
+                scrollPosition >= sectionTop &&
+                scrollPosition < sectionTop + sectionHeight
+              ) {
+                if (!navButton.classList.contains("completed")) {
+                  navButton.style.backgroundColor = "var(--hover-color)";
+                  navButton.style.transform = "scale(1.2)";
+                  navButton.style.opacity = "1";
+                }
+              } else {
+                if (!navButton.classList.contains("completed")) {
+                  navButton.style.backgroundColor =
+                    "var(--section-title-color)";
+                  navButton.style.transform = "scale(1)";
+                  navButton.style.opacity = "0.7";
+                }
+              }
+            });
+          });
+
+          // Funkcja sprawdzająca, czy sekcja jest wypełniona
+          function checkSectionCompletion() {
+            // Informacje Osobiste
+            const personalInfoSection = document.querySelector(
+              ".section-title:nth-of-type(1)"
+            );
+            const personalInfoButton = navContainer.children[0];
+            const ageInput = document.getElementById("age");
+            const sexualPartnersSelect =
+              document.getElementById("sexual_partners");
+
+            if (ageInput.value && sexualPartnersSelect.value) {
+              personalInfoButton.classList.add("completed");
+              personalInfoButton.innerHTML = `<i class="bi bi-check-lg"></i>`;
+              personalInfoButton.style.backgroundColor = "var(--success-color)";
+              personalInfoButton.style.opacity = "1";
+            } else {
+              personalInfoButton.classList.remove("completed");
+              personalInfoButton.innerHTML = `<i class="bi bi-dot"></i>`;
+              personalInfoButton.style.backgroundColor =
+                "var(--section-title-color)";
+              personalInfoButton.style.opacity = "0.7";
+            }
+
+            // Historia Medyczna
+            const medicalHistorySection = document.querySelector(
+              ".section-title:nth-of-type(2)"
+            );
+            const medicalHistoryButton = navContainer.children[1];
+            const firstSexInput = document.getElementById("first_sex");
+            const pregnanciesInput = document.getElementById("pregnancies");
+
+            if (firstSexInput.value && pregnanciesInput.value) {
+              medicalHistoryButton.classList.add("completed");
+              medicalHistoryButton.innerHTML = `<i class="bi bi-check-lg"></i>`;
+              medicalHistoryButton.style.backgroundColor =
+                "var(--success-color)";
+              medicalHistoryButton.style.opacity = "1";
+            } else {
+              medicalHistoryButton.classList.remove("completed");
+              medicalHistoryButton.innerHTML = `<i class="bi bi-dot"></i>`;
+              medicalHistoryButton.style.backgroundColor =
+                "var(--section-title-color)";
+              medicalHistoryButton.style.opacity = "0.7";
+            }
+
+            // Historia Palenia
+            const smokingHistorySection = document.querySelector(
+              ".section-title:nth-of-type(3)"
+            );
+            const smokingHistoryButton = navContainer.children[2];
+            const smokesRadio = document.querySelector(
+              'input[name="smokes"]:checked'
+            );
+            const smokesYearsInput = document.getElementById("smokes_years");
+            const smokesPacksInput =
+              document.getElementById("smokes_packs_year");
+
+            if (
+              smokesRadio &&
+              (smokesRadio.value === "0" ||
+                (smokesYearsInput.value && smokesPacksInput.value))
+            ) {
+              smokingHistoryButton.classList.add("completed");
+              smokingHistoryButton.innerHTML = `<i class="bi bi-check-lg"></i>`;
+              smokingHistoryButton.style.backgroundColor =
+                "var(--success-color)";
+              smokingHistoryButton.style.opacity = "1";
+            } else {
+              smokingHistoryButton.classList.remove("completed");
+              smokingHistoryButton.innerHTML = `<i class="bi bi-dot"></i>`;
+              smokingHistoryButton.style.backgroundColor =
+                "var(--section-title-color)";
+              smokingHistoryButton.style.opacity = "0.7";
+            }
+
+            // Historia Antykoncepcji
+            const contraceptionHistorySection = document.querySelector(
+              ".section-title:nth-of-type(4)"
+            );
+            const contraceptionHistoryButton = navContainer.children[3];
+            const hormonalContraceptivesRadio = document.querySelector(
+              'input[name="hormonal_contraceptives"]:checked'
+            );
+            const hormonalContraceptivesYearsInput = document.getElementById(
+              "hormonal_contraceptives_years"
+            );
+
+            if (
+              hormonalContraceptivesRadio &&
+              (hormonalContraceptivesRadio.value === "0" ||
+                hormonalContraceptivesYearsInput.value)
+            ) {
+              contraceptionHistoryButton.classList.add("completed");
+              contraceptionHistoryButton.innerHTML = `<i class="bi bi-check-lg"></i>`;
+              contraceptionHistoryButton.style.backgroundColor =
+                "var(--success-color)";
+              contraceptionHistoryButton.style.opacity = "1";
+            } else {
+              contraceptionHistoryButton.classList.remove("completed");
+              contraceptionHistoryButton.innerHTML = `<i class="bi bi-dot"></i>`;
+              contraceptionHistoryButton.style.backgroundColor =
+                "var(--section-title-color)";
+              contraceptionHistoryButton.style.opacity = "0.7";
+            }
+
+            // Wkładka Wewnątrzmaciczna
+            const iudSection = document.querySelector(
+              ".section-title:nth-of-type(5)"
+            );
+            const iudButton = navContainer.children[4];
+            const iudRadio = document.querySelector(
+              'input[name="iud"]:checked'
+            );
+            const iudYearsInput = document.getElementById("iud_years");
+
+            if (iudRadio && (iudRadio.value === "0" || iudYearsInput.value)) {
+              iudButton.classList.add("completed");
+              iudButton.innerHTML = `<i class="bi bi-check-lg"></i>`;
+              iudButton.style.backgroundColor = "var(--success-color)";
+              iudButton.style.opacity = "1";
+            } else {
+              iudButton.classList.remove("completed");
+              iudButton.innerHTML = `<i class="bi bi-dot"></i>`;
+              iudButton.style.backgroundColor = "var(--section-title-color)";
+              iudButton.style.opacity = "0.7";
+            }
+
+            // Choroby Przenoszone Drogą Płciową
+            const stdsSection = document.querySelector(
+              ".section-title:nth-of-type(6)"
+            );
+            const stdsButton = navContainer.children[5];
+            const stdsRadio = document.querySelector(
+              'input[name="stds"]:checked'
+            );
+            const stdsNumberInput = document.getElementById("stds_number");
+
+            if (
+              stdsRadio &&
+              (stdsRadio.value === "0" || stdsNumberInput.value)
+            ) {
+              stdsButton.classList.add("completed");
+              stdsButton.innerHTML = `<i class="bi bi-check-lg"></i>`;
+              stdsButton.style.backgroundColor = "var(--success-color)";
+              stdsButton.style.opacity = "1";
+            } else {
+              stdsButton.classList.remove("completed");
+              stdsButton.innerHTML = `<i class="bi bi-dot"></i>`;
+              stdsButton.style.backgroundColor = "var(--section-title-color)";
+              stdsButton.style.opacity = "0.7";
+            }
+
+            // Szczegóły Chorób STD
+            const stdsDetailsSection = document.querySelector(
+              ".section-title:nth-of-type(7)"
+            );
+            const stdsDetailsButton = navContainer.children[6];
+            const stdsCheckboxes = document.querySelectorAll(
+              'input[type="checkbox"]'
+            );
+            let stdsCheckboxesChecked = false;
+
+            stdsCheckboxes.forEach((checkbox) => {
+              if (checkbox.checked) {
+                stdsCheckboxesChecked = true;
+              }
+            });
+
+            if (
+              (stdsRadio && stdsRadio.value === "0") ||
+              stdsCheckboxesChecked
+            ) {
+              stdsDetailsButton.classList.add("completed");
+              stdsDetailsButton.innerHTML = `<i class="bi bi-check-lg"></i>`;
+              stdsDetailsButton.style.backgroundColor = "var(--success-color)";
+              stdsDetailsButton.style.opacity = "1";
+            } else {
+              stdsDetailsButton.classList.remove("completed");
+              stdsDetailsButton.innerHTML = `<i class="bi bi-dot"></i>`;
+              stdsDetailsButton.style.backgroundColor =
+                "var(--section-title-color)";
+              stdsDetailsButton.style.opacity = "0.7";
+            }
+
+            // Dodatkowe Informacje o STD
+            const additionalStdsSection = document.querySelector(
+              ".section-title:nth-of-type(8)"
+            );
+            const additionalStdsButton = navContainer.children[7];
+            const stdsDiagnosisNumberInput = document.getElementById(
+              "stds_diagnosis_number"
+            );
+
+            if (
+              (stdsRadio && stdsRadio.value === "0") ||
+              stdsDiagnosisNumberInput.value
+            ) {
+              additionalStdsButton.classList.add("completed");
+              additionalStdsButton.innerHTML = `<i class="bi bi-check-lg"></i>`;
+              additionalStdsButton.style.backgroundColor =
+                "var(--success-color)";
+              additionalStdsButton.style.opacity = "1";
+            } else {
+              additionalStdsButton.classList.remove("completed");
+              additionalStdsButton.innerHTML = `<i class="bi bi-dot"></i>`;
+              additionalStdsButton.style.backgroundColor =
+                "var(--section-title-color)";
+              additionalStdsButton.style.opacity = "0.7";
+            }
+          }
+
+          // Dodaj nasłuchiwanie na zmiany w formularzu
+          const formInputs = document.querySelectorAll(
+            "input, select, textarea"
+          );
+          formInputs.forEach((input) => {
+            input.addEventListener("change", checkSectionCompletion);
+            input.addEventListener("input", checkSectionCompletion);
+          });
+
+          // Sprawdź stan formularza przy załadowaniu
+          checkSectionCompletion();
+        }
+      });
+
+      // Funkcja do dezaktywacji pól
+      function toggleFields(radioId, fieldIds) {
+        const radioNo = document.getElementById(radioId);
+        const radioYes = document.getElementById(
+          radioId.replace("_no", "_yes")
+        );
+        const fields = fieldIds.map((id) => document.getElementById(id));
+
+        function updateFields(isDisabled) {
+          fields.forEach((field) => {
+            field.disabled = isDisabled;
+            if (isDisabled) {
+              field.value = "0";
+              field.classList.add("disabled-field");
+            } else {
+              field.classList.remove("disabled-field");
+            }
+          });
+        }
+
+        radioNo.addEventListener("change", function () {
+          updateFields(this.value === "0");
+        });
+
+        radioYes.addEventListener("change", function () {
+          updateFields(this.value === "0");
+        });
+      }
+
+      // Inicjalizacja dezaktywacji pól
+      document.addEventListener("DOMContentLoaded", function () {
+        // Palenie
+        toggleFields("smokes_no", ["smokes_years", "smokes_packs_year"]);
+
+        // Antykoncepcja hormonalna
+        toggleFields("hormonal_contraceptives_no", [
+          "hormonal_contraceptives_years",
+        ]);
+
+        // Wkładka
+        toggleFields("iud_no", ["iud_years"]);
+
+        // STD
+        toggleFields("stds_no", [
+          "stds_number",
+          "stds_condylomatosis",
+          "stds_cervical_condylomatosis",
+          "stds_vaginal_condylomatosis",
+          "stds_vulvo_perineal_condylomatosis",
+          "stds_syphilis",
+          "stds_pelvic_inflammatory_disease",
+          "stds_genital_herpes",
+          "stds_molluscum_contagiosum",
+          "stds_aids",
+          "stds_hiv",
+          "stds_hepatitis_b",
+          "stds_hpv",
+          "stds_diagnosis_number",
+        ]);
+
+        // Obsługa pola "Liczba partnerów seksualnych"
+        const sexualPartnersSelect = document.getElementById("sexual_partners");
+        const firstSexInput = document.getElementById("first_sex");
+        const pregnanciesInput = document.getElementById("pregnancies");
+
+        sexualPartnersSelect.addEventListener("change", function () {
+          if (this.value === "0") {
+            firstSexInput.disabled = true;
+            pregnanciesInput.disabled = true;
+            firstSexInput.value = "";
+            pregnanciesInput.value = "";
+            firstSexInput.classList.add("disabled-field");
+            pregnanciesInput.classList.add("disabled-field");
+          } else {
+            firstSexInput.disabled = false;
+            pregnanciesInput.disabled = false;
+            firstSexInput.classList.remove("disabled-field");
+            pregnanciesInput.classList.remove("disabled-field");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
